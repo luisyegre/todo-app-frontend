@@ -3,12 +3,14 @@ import TodoList from "@/components/TodoList.vue";
 import TodoForm from "@/components/TodoForm.vue";
 import TodoItem from "@/components/TodoItem.vue";
 import axios from "@/utils/axios";
-import { onMounted, reactive, ref } from "vue";
+import { useToast } from 'vue-toastification'
+import { onMounted, ref } from "vue";
 
 const todoData = ref({
   title:"",
   description:""
 })
+const toast = useToast()
 
 const todos = ref([])
 const todoSelected = ref(null)
@@ -20,7 +22,16 @@ const createTodo = async () => {
       description:todoData.value.description,
     })
     const data = response.data
-    console.log(data)
+    toast.success(response.data.message)
+    todos.value.push(data)
+  } catch(err){
+    console.error(err)
+  }
+}
+const deleteTodo = async (todo) => {
+  try {
+    const response = await axios.delete(`todo/${todo.id}`)
+    toast.success(response.data.message)
   } catch(err){
     console.error(err)
   }
@@ -44,20 +55,20 @@ const updateTodo = async () => {
       description:todoData.value.description,
     })
     const data = response.data
-    console.log(data)
+    toast.success(response.data.message)
   } catch(err){
     console.error(err)
   }
 }
 const onTodoDelete = (todo) => {
   console.log(todo)
+  deleteTodo(todo)
 }
 const onTodoUpdate = (todo) => {
   console.log(todo)
 }
 onMounted(()=>{
   getAllTodo()
-
 })
 </script>
 
@@ -71,7 +82,7 @@ onMounted(()=>{
     </TodoList>
   </main>
 </template>
-<style>
+<style scoped>
 main {
   padding: 1rem;
 }

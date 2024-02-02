@@ -38,6 +38,7 @@ const emit = defineEmits(["delete","update"])
   height: 30px;
   margin-left: .5rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 .todo-header-actions button:hover{
   background: rgb(188, 188, 188);

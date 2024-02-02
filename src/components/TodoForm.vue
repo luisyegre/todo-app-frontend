@@ -23,7 +23,7 @@ watchEffect(()=>{
     </form>
   </div>
 </template>
-<style>
+<style scoped>
 
 form{
   display: flex;
