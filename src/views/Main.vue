@@ -43,6 +43,8 @@ const deleteTodo = async (todo) => {
 
   } catch(err){
     console.error(err)
+    toast.error(err.response.data.error.message)
+
   }
 }
 const getAllTodo = async () => {
@@ -55,28 +57,33 @@ const getAllTodo = async () => {
   }
 }
 const updateTodo = async (todo) => {
+  if (!todo.title){
+    toast.error("The title is required")
+    return
+  }
   try {
     const response = await axios.put(`todo/${todo.id}`,{...todo})
     toast.success(response.data.message)
     const todoIndex = todos.value.findIndex((el)=>el.id === todo.id)
-    todos.value[todoIndex] = response.data.todo 
+    todos.value[todoIndex].title = todo.title
+    todos.value[todoIndex].description = todo.description
+    todos.value[todoIndex].editing = false
 
   } catch(err){
+    toast.error(err.response.data.error.title[0])
     console.error(err)
   }
 }
 const onTodoDelete = (todo) => {
   deleteTodo(todo)
 }
-const onTodoUpdate = (todo) => {
-  if(todo.editing){
-    updateTodo(todo)
-  }
+const onTodoUpdate = async (todo) => {
   const todoIndex = todos.value.findIndex((el)=>el.id === todo.id)
-  todos.value[todoIndex].editing = !todo.editing 
-
-  
-  todo.isEditing = true
+  if(todo.editing){
+    await updateTodo(todo)
+    return
+  }
+  todos.value[todoIndex].editing = true
 }
 const logout = () => {
   localStorage.removeItem("auth-token")
