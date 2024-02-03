@@ -1,5 +1,7 @@
 <script setup>
 import { ref, watch, watchEffect } from "vue";
+import MyInput from "./MyInput.vue";
+import MyButton from "./MyButton.vue";
 
 const data = ref({
   title:"",
@@ -14,12 +16,13 @@ watchEffect(()=>{
 </script>
 <template>
   <div>
-    <form @submit.prevent="emit('submit')">
-      <input type="text" placeholder="title" v-model="data.title">
-      <input type="text" placeholder="description" v-model="data.description">
-      <button type="submit">
+    <form>
+      <MyInput type="text" placeholder="title" v-model="data.title"/>
+      <textarea placeholder="description" v-model="data.description">
+      </textarea>
+      <MyButton type="submit" @clicked="emit('submit',$event)">
         Crear
-      </button>  
+      </MyButton>  
     </form>
   </div>
 </template>
@@ -29,18 +32,27 @@ form{
   display: flex;
   flex-direction: column;
   gap: .5rem;
-}
-input {
-  width: 100%;
-  height: 2.5rem;
-  border: 1.5px solid gray;
   border-radius: 8px;
-  padding: .5rem;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(7, 7, 7, 0.148);
+  margin: auto;
 }
-button{
+
+textarea {
   width: 100%;
-  height: 2.5rem;
-  border: 1.5px solid gray;
+  border: 1.5px solid rgb(185, 185, 185);
   border-radius: 8px;
+  padding: 1rem;
+  resize: vertical;
+  font-size: 1.1rem;
+}
+textarea {
+  height: 5rem;
+}
+
+@media (width >= 800px) {
+  form {
+    max-width: 35rem;
+  }
 }
 </style>
