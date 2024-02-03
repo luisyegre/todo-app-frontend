@@ -17,9 +17,7 @@
 }
 @media (width >= 800px) {
   .todo-container {
-    flex-direction: row;   
-    flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
   }
 }
 </style>

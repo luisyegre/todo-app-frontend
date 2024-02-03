@@ -26,8 +26,8 @@ const createTodo = async (ev) => {
     const data = response.data
     toast.success(response.data.message)
     todos.value.unshift(data.todo)
-    todoData.vale.title = ""
-    todoData.vale.description = ""
+    todoData.value.title = ""
+    todoData.value.description = ""
   } catch(err){
     console.error(err)
     toast.error(err.response.data.error.title[0])
